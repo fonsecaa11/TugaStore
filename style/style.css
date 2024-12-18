@@ -1,0 +1,91 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Lato', sans-serif;
+    line-height: 1.6;
+    background-color: #f3f0e7;
+}
+
+header {
+    background-color: #006633;
+    color: #fff;
+    padding: 1rem 0;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+}
+
+nav .logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+nav .menu {
+    list-style: none;
+    display: flex;
+}
+
+nav .menu li {
+    margin-left: 20px;
+}
+
+nav .menu a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: color 0.3s;
+}
+
+nav .menu a:hover {
+    color: #ffcc00;
+}
+
+main {
+    padding: 2rem;
+}
+
+section h2 {
+    color: #006633;
+    border-bottom: 2px solid #ffcc00;
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+.produtos {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.produto {
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 1rem;
+    width: 30%;
+    text-align: center;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.produto img {
+    max-width: 100%;
+    border-bottom: 2px solid #006633;
+    margin-bottom: 1rem;
+}
+
+footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: #006633;
+    color: #fff;
+}
