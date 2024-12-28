@@ -5,17 +5,15 @@ include('conn.php');
 try {
     $conn = new mysqli($servername, $username, $password, $dbname);
 } catch (mysqli_sql_exception $e) {
-    echo "Erro ao aceder á base de dados $e";
+    echo "Erro ao aceder à base de dados: $e";
 }
 
-
 // Consultas para obter os produtos
-$top_vendas_query = "SELECT nome, preco, imagem FROM produto ORDER BY vendas DESC LIMIT 3";
+$top_vendas_query = "SELECT nome, preco, imagem FROM produto LIMIT 1";
 $top_vendas_result = $conn->query($top_vendas_query);
-/*
-$ultimas_roupas_query = "SELECT nome, preco, imagem FROM produto ORDER BY id_produto DESC LIMIT 3";
 
-$ultimas_roupas_result = $conn->query($ultimas_roupas_query);*/
+$ultimas_roupas_query = "SELECT nome, preco, imagem FROM produto LIMIT 3";
+$ultimas_roupas_result = $conn->query($ultimas_roupas_query);
 ?>
 
 <!DOCTYPE html>
@@ -35,21 +33,11 @@ $ultimas_roupas_result = $conn->query($ultimas_roupas_query);*/
                 <li><a href="#sobre-nos">Sobre Nós</a></li>
                 <li><a href="#contactos">Contactos</a></li>
             </ul>
-            <div class="login-icon" onclick="mostrarLogin()">🔒</div>
+            <div class="login-icon">
+                <a href="login.php">🔒 Login</a>
+            </div>
         </nav>
     </header>
-
-    <div id="login-form" style="display: none;">
-        <form action="login.php" method="POST">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
-
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-
-            <button type="submit">Entrar</button>
-        </form>
-    </div>
 
     <main>
         <section id="catalogo">
@@ -62,7 +50,7 @@ $ultimas_roupas_result = $conn->query($ultimas_roupas_query);*/
                     if ($top_vendas_result->num_rows > 0) {
                         while ($row = $top_vendas_result->fetch_assoc()) {
                             echo "<div class='produto'>";
-                            echo "<img src='" . $row['imagem'] . "' alt='" . $row['nome'] . "'>";
+                            echo "<img src='image/" . $row['imagem'] . "' alt='" . $row['nome'] . "'>";
                             echo "<h4>" . $row['nome'] . "</h4>";
                             echo "<p>€" . $row['preco'] . "</p>";
                             echo "</div>";
@@ -81,7 +69,7 @@ $ultimas_roupas_result = $conn->query($ultimas_roupas_query);*/
                     if ($ultimas_roupas_result->num_rows > 0) {
                         while ($row = $ultimas_roupas_result->fetch_assoc()) {
                             echo "<div class='produto'>";
-                            echo "<img src='" . $row['imagem'] . "' alt='" . $row['nome'] . "'>";
+                            echo "<img src='image/" . $row['imagem'] . "' alt='" . $row['nome'] . "'>";
                             echo "<h4>" . $row['nome'] . "</h4>";
                             echo "<p>€" . $row['preco'] . "</p>";
                             echo "</div>";
@@ -119,12 +107,5 @@ $ultimas_roupas_result = $conn->query($ultimas_roupas_query);*/
     <footer>
         <p>&copy; 2024 Roupa Tuga. Todos os direitos reservados.</p>
     </footer>
-
-    <script>
-        function mostrarLogin() {
-            const loginForm = document.getElementById('login-form');
-            loginForm.style.display = loginForm.style.display === 'none' ? 'block' : 'none';
-        }
-    </script>
 </body>
 </html>
