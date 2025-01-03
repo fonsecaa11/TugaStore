@@ -24,14 +24,21 @@
         <section id="login">
             <h2>Login</h2>
             <form action="autenticar.php" method="POST">
-                <label for="username">Username:</label>
+                <label for="username">Utilizador:</label>
                 <input type="text" id="username" name="username" required>
                 <br><br>
-                <label for="password">Password:</label>
+                <label for="password">Senha:</label>
                 <input type="password" id="password" name="password" required>
                 <br><br><br>
+                <?php
+                if (isset($_SESSION['error'])) {
+                    echo "<p style='color: red;'>" . $_SESSION['error'] . "</p>";
+                }
+                ?>
                 <button type="submit">Entrar</button>
             </form>
+
+            <p>Não tem uma conta? <a href="registar.php">Registe-se aqui</a>.</p>
         </section>
 
         <section id="sobre-nos">

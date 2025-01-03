@@ -1,43 +1,46 @@
 <?php
 session_start();
+
+// Inclui o arquivo de conexão com o banco de dados
 include('conn.php');
 
+// Verifica se a conexão foi estabelecida
+try {
+    $conn = new mysqli($servername, $username, $password, $dbname);
+} catch (mysqli_sql_exception $e) {
+    echo "Erro ao aceder à base de dados: $e";
+}
+
+// Verifica se o método da requisição é POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
-    $password = $_POST['password'];
+    $password = sha1($_POST['password']);
 
-    // Depuração: Verifique se os valores foram recebidos
+    // Verifica se os campos foram preenchidos
     if (empty($username) || empty($password)) {
         die("Por favor, preencha todos os campos.");
     }
 
-    // Consulta SQL
-    $query = "SELECT * FROM users WHERE nome = ?";
-    $stmt = $conn->prepare($query);
+    // Consulta SQL (insegura - apenas para demonstração)
+    $login = "SELECT * FROM users WHERE nome = '$username' AND password = '$password'";
+    $result = $conn->query($login);
 
-    if (!$stmt) {
-        die("Erro na preparação da query: " . $conn->error);
+    if (!$result) {
+        die("Erro ao executar a consulta: " . $conn->error);
     }
 
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
+    // Verifica se o usuário foi encontrado
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
-        // Verifique a senha
-        if (password_verify($password, $user['password'])) {
-            $_SESSION['loggedin'] = true;
-            $_SESSION['username'] = $user['username'];
-            header("Location: backoffice.php");
-            exit;
-        } else {
-            echo "Password incorreta.";
-        }
+        // Configura a sessão
+        $_SESSION['loggedin'] = true;
+        $_SESSION['username'] = $user['nome'];
+        header("Location: backoffice.php");
+        exit;
     } else {
-        echo "Utilizador não encontrado.";
+        $_SESSION['error'] = "Utilizador ou senha incorretos.";
+        header("Location: login.php");
+        exit;
     }
-} else {
-    echo "Método inválido.";
 }
 ?>
