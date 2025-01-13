@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_produto = $_POST['id_produto'];
 
     // Verifica se o produto já está no carrinho
-    $query = "SELECT quantidade FROM carrinho WHERE id_utilizador = ? AND id_produto = ?";
+    echo $sql = "SELECT quantidade FROM carrinho WHERE id_utilizador = ? AND id_produto = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("ii", $id_utilizador, $id_produto);
     $stmt->execute();
