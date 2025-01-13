@@ -29,14 +29,14 @@ if (isset($_GET['delete'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerir Usuários</title>
-    <link rel="stylesheet" href="usuarios_style.css">
+    <link rel="stylesheet" href="style/usuarios_style.css">
 </head>
 <body>
     <h1>Gerir Usuários</h1>
     <h2>Lista de Usuários</h2>
     <ul>
         <?php
-        $result = $conn->query("SELECT id, nome, email FROM users");
+        $result = $conn->query("SELECT * FROM users");
         while ($row = $result->fetch_assoc()) {
             echo "<li>" . $row['username'] . " (" . $row['email'] . ")" . 
                  " <a href='gerir_usuarios.php?delete=" . $row['id'] . "'>Excluir</a></li>";

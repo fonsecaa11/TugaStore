@@ -46,7 +46,7 @@ if (isset($_GET['delete'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerir Produtos</title>
-    <link rel="stylesheet" href="produtos_style.css">
+    <link rel="stylesheet" href="style/produtos_style.css">
 </head>
 <body>
     <h1>Gerir Produtos</h1>
@@ -60,7 +60,7 @@ if (isset($_GET['delete'])) {
     <h2>Lista de Produtos</h2>
     <ul>
         <?php
-        $result = $conn->query("SELECT id, nome, preco FROM produto");
+        $result = $conn->query("SELECT * FROM produto");
         while ($row = $result->fetch_assoc()) {
             echo "<li>" . $row['nome'] . " - R$" . $row['preco'] . 
                  " <a href='gerir_produtos.php?delete=" . $row['id'] . "'>Excluir</a></li>";

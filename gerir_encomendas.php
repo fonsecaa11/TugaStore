@@ -12,7 +12,7 @@ include ('conn.php');
 $filtro = isset($_GET['status']) ? $_GET['status'] : '';
 
 // Prepara a consulta com base no filtro
-$sql = "SELECT id, cliente, produto, quantidade, estado FROM orders";
+$sql = "SELECT * FROM orders";
 if ($filtro) {
     $sql .= " WHERE estado = $estado";
 }
@@ -33,7 +33,7 @@ $result = $stmt->get_result();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerir Encomendas</title>
-    <link rel="stylesheet" href="encomendas_style.css">
+    <link rel="stylesheet" href="style/encomendas_style.css">
 </head>
 <body>
     <h1>Gerir Encomendas</h1>

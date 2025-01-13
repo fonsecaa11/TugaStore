@@ -12,7 +12,7 @@ $id_utilizador = $_SESSION['user_id'];
 
 // Busca os produtos no carrinho do utilizador
 $query = "
-    SELECT carrinho.id_carrinho, carrinho.user_id, produto.nome, produto.imagem, produto.descricao, produto.preco, tamanho.descricao, carrinho.quantidade 
+    SELECT carrinho.id_carrinho, carrinho.user_id, produto.nome, produto.imagem, produto.descricao, produto.preco, tamanho.descricao, carrinho.quantidade, produto_tamanho.stock 
     FROM carrinho 
     INNER JOIN produto_tamanho ON carrinho.produto_tamanho_id = produto_tamanho.id_produto_tamanho 
     INNER JOIN produto ON produto_tamanho.produto_id = produto.id_produto 
@@ -66,25 +66,26 @@ $result = $stmt->get_result();
                 <tr>
                     <th>Nome</th>
                     <th>Imagem</th>
-                    <th>Preço</th>
+                    <th>Preço Unitário</th>
                     <th>Quantidade</th>
                     <th>Total</th>
                     <th>Ação</th>
                 </tr>
                 <?php while ($row = $result->fetch_assoc()): ?>
-                    <tr>
-                        <td><?php echo $row['nome']; ?></td>
-                        <td><img src="<?php echo $row['imagem']; ?>" alt="<?php echo $row['nome']; ?>" style="width: 100px; height: 100px;"></td>
-                        <td>€<?php echo number_format($row['preco'], 2); ?></td>
-                        <td><?php echo $row['quantidade']; ?></td>
-                        <td>€<?php echo number_format($row['preco'] * $row['quantidade'], 2); ?></td>
-                        <td>
-                            <form action="remover_do_carrinho.php" method="POST">
-                                <input type="hidden" name="id_carrinho" value="<?php echo $row['user_id']; ?>">
-                                <button type="submit">Remover</button>
-                            </form>
-                        </td>
-                    </tr>
+                    <form action="acao_carrinho.php" method="POST">
+                        <tr>
+                            <td><?php echo $row['nome']; ?></td>
+                            <td><img src="<?php echo $row['imagem']; ?>" alt="<?php echo $row['nome']; ?>" style="width: 100px; height: 100px;"></td>
+                            <td>€<?php echo number_format($row['preco'], 2); ?></td>
+                            <td><input type="number" id="quantidade" name="quantidade" min="1" max="<?php echo $row['stock']; ?>" value="<?php echo $row['quantidade']; ?>"></td>
+                            <td>€<?php echo number_format($row['preco'] * $row['quantidade'], 2); ?></td>
+                            <td>
+                                <input type="hidden" name="id_carrinho" value="<?php echo $row['id_carrinho']; ?>">
+                                <button type="submit" name ="atualizar">Atualizar</button>
+                                <button type="submit" name ="remover">Remover</button>
+                            </td>
+                        </tr>
+                    </form>
                 <?php endwhile; ?>
             </table>
         <?php else: ?>

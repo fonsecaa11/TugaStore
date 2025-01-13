@@ -53,9 +53,6 @@ $result = $conn->query($query);
                 </a>
                 <h2><?php echo htmlspecialchars($row['nome']); ?></h2>
                 <p>€<?php echo number_format($row['preco'], 2, ',', '.'); ?></p>
-                <?php if ($row['desconto'] > 0): ?>
-                    <p><strong>Desconto:</strong> <?php echo $row['desconto']; ?>%</p>
-                <?php endif; ?>
                 <form action="adicionar_ao_carrinho.php" method="POST">
                     <input type="hidden" name="id_produto" value="<?php echo $row['id_produto']; ?>">
                     <button type="submit">Adicionar ao Carrinho</button>

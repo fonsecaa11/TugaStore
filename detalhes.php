@@ -90,9 +90,7 @@ $produto = $result_produto->fetch_assoc();
             <?php if ($produto['desconto'] > 0): ?>
                 <p><strong>Desconto:</strong> <?= $produto['desconto']; ?>%</p>
             <?php endif; ?>
-
-            <p><strong>Preço com desconto:</strong> €<?= number_format($produto['preco'] * ($produto['desconto'] / 100), 2, ',', '.'); ?></p>
-
+            
             <form action="adicionar_ao_carrinho.php" method="POST">
                 <input type="hidden" name="id_produto" value="<?php echo $produto['id_produto']; ?>">
 
