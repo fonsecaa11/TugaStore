@@ -19,7 +19,8 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         <ul>
             <li><a href="gerir_produtos.php">Gerir Produtos</a></li>
             <li><a href="gerir_usuarios.php">Gerir Usuários</a></li>
-            <li><a href="logout.php">Logout</a></li>
+            <li><a href="gerir_encomendas.php">Gerir Usuários</a></li>
+            <li><a href="logout_backoffice.php">Logout</a></li>
         </ul>
     </nav>
 </body>

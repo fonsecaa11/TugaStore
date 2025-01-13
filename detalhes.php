@@ -12,7 +12,7 @@ if ($id_produto === 0) {
 }
 
 // Consulta para buscar os detalhes do produto
-$sql_produto = "SELECT nome, preco, descricao, desconto, imagem FROM produto WHERE id_produto = ?";
+$sql_produto = "SELECT * FROM produto WHERE id_produto = ?";
 $stmt_produto = $conn->prepare($sql_produto);
 $stmt_produto->bind_param("i", $id_produto);
 $stmt_produto->execute();
@@ -78,10 +78,10 @@ $produto = $result_produto->fetch_assoc();
     <h1>Detalhes do Produto</h1>
     <div class="detalhes-container">
         <div class="imagem-produto">
-            <img src="<?= $produto['imagem']; ?>" alt="<?= htmlspecialchars($produto['nome']); ?> "style="width: 500px; height: 500px;">
+            <img src="<?= $produto['imagem']; ?>" alt="<?= htmlspecialchars($produto['nome']); ?>">
         </div>
         <div class="informacoes-produto">
-            <h2>Produto Top Xuxa</h2>
+            <h2><?= htmlspecialchars($produto['nome']); ?></h2>
 
             <p><?= htmlspecialchars($produto['descricao']); ?></p>
 
@@ -91,20 +91,31 @@ $produto = $result_produto->fetch_assoc();
                 <p><strong>Desconto:</strong> <?= $produto['desconto']; ?>%</p>
             <?php endif; ?>
 
-            <p><strong>Preço com desconto:</strong> €<?= number_format($produto['preco'] - $produto['desconto'], 2, ',', '.'); ?></p>
-
-            <label for="tamanho">Tamanhos disponíveis:</label>
-            <select name="tamanho" id="tamanho">
-                <?php while ($tamanho = $result_tamanhos->fetch_assoc()): ?>
-                    <option value="<?php echo $tamanho['id_tamanho']; ?>"><?php echo $tamanho['descricao']; ?></option>
-                <?php endwhile; ?>
-            </select>
-            
-            
+            <p><strong>Preço com desconto:</strong> €<?= number_format($produto['preco'] * ($produto['desconto'] / 100), 2, ',', '.'); ?></p>
 
             <form action="adicionar_ao_carrinho.php" method="POST">
-                <input type="hidden" name="id_produto" value="id_do_produto">
+                <input type="hidden" name="id_produto" value="<?php echo $produto['id_produto']; ?>">
+
+                <label for="tamanho"><p><strong>Tamanhos disponíveis:</strong></p></label>
+                <select name="id_tamanho" id="tamanho">
+                    <?php while ($tamanho = $result_tamanhos->fetch_assoc()): ?>
+                        <option value="<?php echo $tamanho['id_tamanho']; ?>"><?php echo $tamanho['descricao']; ?></option>
+                    <?php endwhile; ?>
+                </select>
+                <br><br><br>
+
                 <button type="submit">Adicionar ao Carrinho</button>
+                <br><br>
+                <?php
+                if (isset($_SESSION['success'])) {
+                    echo "<p style='color: green;'>" . $_SESSION['success'] . "</p>";
+                    unset($_SESSION['success']);
+                }elseif (isset($_SESSION['error'])) {
+                    echo "<p style='color: red;'>" . $_SESSION['error'] . "</p>";
+                    unset($_SESSION['error']);
+                }
+                ?>
+
             </form>
         </div>
     </div>

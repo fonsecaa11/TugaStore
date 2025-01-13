@@ -33,7 +33,7 @@ $ultimas_roupas_result = $conn->query($ultimas_roupas_query);
                 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
                     // Exibe o nome do utilizador logado
                     echo "<a href='carrinho.php'>Carrinho</a>";
-                    echo "🔒 Bem-vindo, " . htmlspecialchars($_SESSION['user_id']) . "!";
+                    echo "🔒 Bem-vindo, " . htmlspecialchars($_SESSION['username']) . "!";
                     echo " <a href='logout.php'>Sair</a>"; // Link para logout
                 } else {
                     // Exibe o link de login

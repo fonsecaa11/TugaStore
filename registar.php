@@ -9,7 +9,7 @@
 <body>
     <header>
         <nav>
-            <a href="index.php"><img style="width:170px;height:50px;"g  src="image/logo.png" alt="Logo"></a>
+            <a href="index.php"><img class="logo" src="image/logo.png" alt="Logo"></a>
             <ul class="menu">
                 <li><a href="catalogo.php">Catálogo</a></li>
                 <li><a href="sobre-nos.php">Sobre Nós</a></li>

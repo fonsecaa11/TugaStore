@@ -36,7 +36,7 @@ $result = $stmt->get_result();
 <body>
     <header>
         <nav>
-            <a href="index.php"><img style="width:170px;height:50px;"g  src="image/logo.png" alt="Logo"></a>
+            <a href="index.php"><img class="logo" src="image/logo.png" alt="Logo"></a>
             <ul class="menu">
                 <li><a href="catalogo.php">Catálogo</a></li>
                 <li><a href="sobre-nos.php">Sobre Nós</a></li>
@@ -64,8 +64,8 @@ $result = $stmt->get_result();
         <?php if ($result->num_rows > 0): ?>
             <table>
                 <tr>
+                    <th>Nome</th>
                     <th>Imagem</th>
-                    <th>Produto</th>
                     <th>Preço</th>
                     <th>Quantidade</th>
                     <th>Total</th>
@@ -80,7 +80,7 @@ $result = $stmt->get_result();
                         <td>€<?php echo number_format($row['preco'] * $row['quantidade'], 2); ?></td>
                         <td>
                             <form action="remover_do_carrinho.php" method="POST">
-                                <input type="hidden" name="id_produto" value="<?php echo $row['id_produto']; ?>">
+                                <input type="hidden" name="id_carrinho" value="<?php echo $row['user_id']; ?>">
                                 <button type="submit">Remover</button>
                             </form>
                         </td>
