@@ -9,15 +9,27 @@
 <body>
     <header>
         <nav>
-            <div class="logo">Tuga Store</div>
+            <a href="index.php"><img style="width:170px;height:50px;"g  src="image/logo.png" alt="Logo"></a>
             <ul class="menu">
-                <li><a href="#catalogo">Catálogo</a></li>
-                <li><a href="#sobre-nos">Sobre Nós</a></li>
-                <li><a href="#contactos">Contactos</a></li>
+                <li><a href="catalogo.php">Catálogo</a></li>
+                <li><a href="sobre-nos.php">Sobre Nós</a></li>
+                <li><a href="contactos.php">Contactos</a></li>
             </ul>
             <div class="login-icon">
-                <a href="login.php">🔒 Login</a>
+                <?php
+                session_start(); // Inicia ou retoma a sessão
+                if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
+                    // Exibe o nome do utilizador logado
+                    echo "<a href='carrinho.php'>Carrinho</a>";
+                    echo "🔒 Bem-vindo, " . htmlspecialchars($_SESSION['username']) . "!";
+                    echo " <a href='logout.php'>Sair</a>"; // Link para logout
+                } else {
+                    // Exibe o link de login
+                    echo '<a href="login.php">🔒 Login</a>';
+                }
+                ?>
             </div>
+
         </nav>
     </header>
     <main>

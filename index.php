@@ -2,17 +2,11 @@
 // Conexão com a base de dados
 include('conn.php');
 
-try {
-    $conn = new mysqli($servername, $username, $password, $dbname);
-} catch (mysqli_sql_exception $e) {
-    echo "Erro ao aceder à base de dados: $e";
-}
-
 // Consultas para obter os produtos
 $top_vendas_query = "SELECT nome, preco, imagem FROM produto LIMIT 1";
 $top_vendas_result = $conn->query($top_vendas_query);
 
-$ultimas_roupas_query = "SELECT nome, preco, imagem FROM produto LIMIT 3";
+$ultimas_roupas_query = "SELECT nome, preco, imagem FROM produto order by id_produto desc LIMIT 3 ";
 $ultimas_roupas_result = $conn->query($ultimas_roupas_query);
 ?>
 
@@ -27,15 +21,27 @@ $ultimas_roupas_result = $conn->query($ultimas_roupas_query);
 <body>
     <header>
         <nav>
-            <div class="logo">Tuga Store</div>
+            <a href="index.php"><img style="width:170px;height:50px;"g  src="image/logo.png" alt="Logo"></a>
             <ul class="menu">
-                <li><a href="#catalogo">Catálogo</a></li>
-                <li><a href="#sobre-nos">Sobre Nós</a></li>
-                <li><a href="#contactos">Contactos</a></li>
+                <li><a href="catalogo.php">Catálogo</a></li>
+                <li><a href="sobre-nos.php">Sobre Nós</a></li>
+                <li><a href="contactos.php">Contactos</a></li>
             </ul>
             <div class="login-icon">
-                <a href="login.php">🔒 Login</a>
+                <?php
+                session_start(); // Inicia ou retoma a sessão
+                if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true) {
+                    // Exibe o nome do utilizador logado
+                    echo "<a href='carrinho.php'>Carrinho</a>";
+                    echo "🔒 Bem-vindo, " . htmlspecialchars($_SESSION['user_id']) . "!";
+                    echo " <a href='logout.php'>Sair</a>"; // Link para logout
+                } else {
+                    // Exibe o link de login
+                    echo '<a href="login.php">🔒 Login</a>';
+                }
+                ?>
             </div>
+
         </nav>
     </header>
 
@@ -50,7 +56,7 @@ $ultimas_roupas_result = $conn->query($ultimas_roupas_query);
                     if ($top_vendas_result->num_rows > 0) {
                         while ($row = $top_vendas_result->fetch_assoc()) {
                             echo "<div class='produto'>";
-                            echo "<img src='image/" . $row['imagem'] . "' alt='" . $row['nome'] . "'>";
+                            echo "<img src='" . $row['imagem'] . "' alt='" . $row['nome'] . "'>";
                             echo "<h4>" . $row['nome'] . "</h4>";
                             echo "<p>€" . $row['preco'] . "</p>";
                             echo "</div>";
@@ -69,7 +75,7 @@ $ultimas_roupas_result = $conn->query($ultimas_roupas_query);
                     if ($ultimas_roupas_result->num_rows > 0) {
                         while ($row = $ultimas_roupas_result->fetch_assoc()) {
                             echo "<div class='produto'>";
-                            echo "<img src='image/" . $row['imagem'] . "' alt='" . $row['nome'] . "'>";
+                            echo "<img src='" . $row['imagem'] . "' alt='" . $row['nome'] . "'>";
                             echo "<h4>" . $row['nome'] . "</h4>";
                             echo "<p>€" . $row['preco'] . "</p>";
                             echo "</div>";
