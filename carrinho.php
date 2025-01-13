@@ -66,6 +66,7 @@ $result = $stmt->get_result();
                 <tr>
                     <th>Nome</th>
                     <th>Imagem</th>
+                    <th>Tamanho</th>
                     <th>Preço Unitário</th>
                     <th>Quantidade</th>
                     <th>Total</th>
@@ -76,9 +77,10 @@ $result = $stmt->get_result();
                         <tr>
                             <td><?php echo $row['nome']; ?></td>
                             <td><img src="<?php echo $row['imagem']; ?>" alt="<?php echo $row['nome']; ?>" style="width: 100px; height: 100px;"></td>
+                            <td><?php echo $row['descricao'] ?></td>
                             <td>€<?php echo number_format($row['preco'], 2); ?></td>
                             <td><input type="number" id="quantidade" name="quantidade" min="1" max="<?php echo $row['stock']; ?>" value="<?php echo $row['quantidade']; ?>"></td>
-                            <td>€<?php echo number_format($row['preco'] * $row['quantidade'], 2); ?></td>
+                            <td>€<?php echo number_format($total = $row['preco'] * $row['quantidade'], 2); ?></td>
                             <td>
                                 <input type="hidden" name="id_carrinho" value="<?php echo $row['id_carrinho']; ?>">
                                 <button type="submit" name ="atualizar">Atualizar</button>
@@ -88,6 +90,35 @@ $result = $stmt->get_result();
                     </form>
                 <?php endwhile; ?>
             </table>
+
+            <h3>TOTAL:</h3>
+            <?php 
+                $sql_total = "
+                SELECT 
+                    SUM(p.preco * c.quantidade) as total_geral
+                FROM 
+                    carrinho c
+                INNER JOIN 
+                    produto_tamanho pt ON c.produto_tamanho_id = pt.id_produto_tamanho
+                INNER JOIN 
+                    produto p ON pt.produto_id = p.id_produto
+                WHERE 
+                    c.user_id = '$id_utilizador'
+                ";
+                $stmt = $conn->prepare($sql_total);
+                $stmt->execute();
+                $result_total = $stmt->get_result();
+                $total_geral = $result_total->fetch_assoc()['total_geral'] ?? 0;
+
+                
+            ?>
+            <p><?php echo number_format($total_geral, 2); ?></p>
+            <a href="finalizar_compra.php"><button type="submit">Finalizar Compra</button></a>
+            <?php
+            if (isset($_SESSION['error'])) {
+                echo "<p style='color: red;'>" . $_SESSION['error'] . "</p>";
+                unset($_SESSION['error']);
+            } ?>
         <?php else: ?>
             <p>O seu carrinho está vazio.</p>
         <?php endif; ?>
